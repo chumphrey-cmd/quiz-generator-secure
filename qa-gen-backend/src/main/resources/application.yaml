@@ -1,0 +1,23 @@
+spring:
+  application:
+    name: qa-gen
+
+  profiles:
+    active: dev # Defaults to the development profile
+    include: local # Tells Spring to also load our ignored secrets file
+
+  # ==============================================================
+  # AI PROVIDER CONFIGURATION
+  # ==============================================================
+  # This application uses a BYOK (Bring Your Own Key) architecture.
+  # Keys are passed dynamically from the frontend via HTTP headers.
+  # These dummy values exist solely to prevent Spring Boot's auto-configuration from crashing on startup.
+  # DO NOT PUT REAL KEYS HERE!!
+
+  ai:
+    openai:
+      api-key: byok-mode-dummy-key
+
+    google:
+      genai:
+        api-key: byok-mode-dummy-key

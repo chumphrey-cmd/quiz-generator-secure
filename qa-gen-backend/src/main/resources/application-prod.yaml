@@ -1,0 +1,23 @@
+# while coding locally, but setting it up now fulfills your enterprise design requirement for secure, file-based logging.
+
+spring:
+  datasource:
+    # In production, these would be pulled from secure server environment variables
+    url: ${PROD_DB_URL}
+    username: ${PROD_DB_USER}
+    password: ${PROD_DB_PASSWORD}
+
+  jpa:
+    hibernate:
+      ddl-auto: validate # NEVER use 'update' in prod. This just checks if the tables exist.
+    show-sql: false # Hide SQL from logs for security and performance
+
+# Production Logging: No console, route everything to a secure Rolling File
+logging:
+  pattern:
+    console: "" # Disables console output
+  file:
+    name: logs/qagen-prod.log # Writes to a local restricted folder
+  level:
+    root: WARN
+    mil.army.moda.qagenbackend: INFO

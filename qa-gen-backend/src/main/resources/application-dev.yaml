@@ -1,0 +1,34 @@
+server:
+  port: 8080
+
+spring:
+  datasource:
+    # This URL matches the port and database name from our docker-compose.yml
+    url: jdbc:postgresql://localhost:5434/qagen-db
+    username: user
+    password: password
+    driver-class-name: org.postgresql.Driver
+
+  flyway:
+    enabled: false
+    # this specifies the location of where we created our flyway setup
+    locations: classpath:db/migration
+
+  jpa:
+    hibernate:
+      # 'update' is magic for development: it automatically creates and updates
+      # your database tables based on your Java Entity classes!
+      ddl-auto: update
+#      ddl-auto: create
+    # These settings help you debug by printing the generated SQL to your console
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
+# Development Logging: High verbosity to the console so you can see what's happening
+logging:
+  level:
+    root: INFO
+    # This ensures any custom log messages we write in our code show up
+    com.qagen.backend: DEBUG
