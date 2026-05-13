@@ -1,0 +1,49 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+    /* Core Palette */
+    --primary-color: #d8ff43;
+    --primary-color-rgb: 216, 255, 67;
+    --secondary-color: #d8ff43;
+    --text-on-primary: #121212;
+    --message-color: #65a30d;
+
+    /* Feedback Colors */
+    --error-color: #ef4444;
+    --success-color: #22c55e;
+
+    /* Base Colors */
+    --main-border: #323232;
+    --input-focus: #2d8cf0;
+
+    /* Light Theme (Default) */
+    --page-bg: #f1f1f1;
+    --container-bg: #ffffff;
+    --text-primary: #1a1a1a;
+    --text-secondary: #555555;
+}
+
+/* Dark Theme Overrides */
+html[data-theme="dark"] {
+    --primary-color: #84cc16;
+    --secondary-color: #65a30d;
+    --page-bg: #121212;
+    --container-bg: #1a1a1a;
+    --text-primary: #f0f0f0;
+    --text-secondary: #a0a0a0;
+}
+
+/*
+* 2. Apply base styles
+*/
+@layer base {
+    body {
+        background-color: var(--page-bg);
+        color: var(--text-primary);
+
+        /* @apply is totally safe for standard built-in Tailwind classes */
+        @apply font-sans antialiased transition-colors duration-300;
+    }
+}

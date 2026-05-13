@@ -1,0 +1,1458 @@
+/*
+==========================================================================
+Universal & Themed Variables
+==========================================================================
+*/
+
+/* --- Universal Variables (Do NOT change between themes) --- */
+:root {
+    /* Core Palette */
+    --primary-color: #d8ff43;
+    --primary-color-rgb: 216, 255, 67;
+    --secondary-color: #c4e63c; /* For hover states */
+    --text-on-primary: #121212; /* Text on yellow buttons, always dark */
+    --message-color: #65a30d; /*continue discussion background message color */
+
+    /* Feedback Colors */
+    --error-color: #ef4444;
+    --error-color-rgb: 239, 68, 68;
+    --success-color: #22c55e;
+    --success-color-rgb: 34, 197, 94;
+
+    /* Borders & Spacing */
+    --border-radius-pill: 50px;
+    --border-radius-card: 16px;
+    --border-radius-sm: 8px;
+    --spacing-md: 1rem;
+    --spacing-lg: 1.5rem;
+
+    /* Effects */
+    --backdrop-blur: 15px;
+    --shadow-soft: 0 8px 32px 0 rgba(0, 0, 0, 0.2);
+}
+
+/* --- Light Theme (Default) --- */
+/* These variables apply by default or when data-theme="light" */
+:root,
+html[data-theme="light"] {
+
+    --primary-color: #84cc16; /* A richer, more contrasted lime green for light mode */
+    --secondary-color: #65a30d; /* A matching darker hover color */
+
+    --page-bg: #f1f1f1;
+    --container-bg: #ffffff;
+    --glass-bg: rgba(255, 255, 255, 0.5);
+    --glass-border: rgba(0, 0, 0, 0.1);
+    --text-primary: #1a1a1a;
+    --text-secondary: #555555;
+    --dropdown-bg-opaque: rgba(245, 245, 245, 0.95); /* Opaque dropdown for light mode */
+
+    /* --- High-Contrast Answer Feedback for Light Mode --- */
+    .answer-label.correct {
+        background-color: rgba(var(--success-color-rgb), 0.5); /* A more visible light green background */
+        border: 1px solid rgba(var(--success-color-rgb), 0.5);
+        border-radius: var(--border-radius-sm);
+        padding: 2px 4px;
+        margin: -2px -4px; /* Prevents layout shift from padding */
+    }
+
+    .answer-label.incorrect {
+        background-color: rgba(var(--error-color-rgb), 0.5); /* A subtle light red background */
+        border-radius: var(--border-radius-sm);
+        padding: 2px 4px;
+        margin: -2px -4px;
+    }
+
+    .answer-label.missed {
+        background-color: rgba(var(--success-color-rgb), 0.5); /* Make the missed answer background even more visible */
+        border-color: rgba(var(--success-color-rgb), 0.5);
+    }
+
+
+}
+
+/* --- Dark Theme (Overrides) --- */
+/* These variables apply ONLY when data-theme="dark" */
+html[data-theme="dark"] {
+    --page-bg: #121212;
+    --container-bg: #1a1a1a;
+    --glass-bg: rgba(38, 38, 38, 0.85); /* The more opaque dark glass */
+    --glass-border: rgba(255, 255, 255, 0.1);
+    --text-primary: #f0f0f0;
+    --text-secondary: #a0a0a0;
+    --dropdown-bg-opaque: rgba(40, 40, 40, 0.95); /* Opaque dropdown for dark mode */
+}
+
+/* Base Styles */
+body {
+    background-color: var(--page-bg);
+    color: var(--text-primary);
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    display: block;
+    padding-top: 120px;
+    line-height: 1.6;
+}
+
+/*
+==========================================================================
+    Floating Navigation Bar & Dropdowns
+==========================================================================
+*/
+.floating-nav {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1000;
+    width: 90%;
+    max-width: 900px;
+}
+
+.nav-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem 1.5rem;
+    background: var(--glass-bg);
+    backdrop-filter: blur(var(--backdrop-blur));
+    -webkit-backdrop-filter: blur(var(--backdrop-blur));
+    border: 1px solid var(--glass-border);
+    border-radius: var(--border-radius-pill);
+    box-shadow: var(--shadow-soft);
+}
+
+.nav-left, .nav-right {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.nav-center {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem; /* Controls the space between timer and progress bar */
+}
+
+.nav-logo a {
+    font-weight: 700;
+    font-size: 1.25rem;
+    color: var(--text-primary);
+    text-decoration: none;
+}
+
+.nav-menu {
+    list-style: none;
+    display: flex;
+    gap: 0.5rem;
+    margin: 0;
+    padding: 0;
+}
+
+.nav-menu > li {
+    position: relative;
+}
+
+.nav-menu > li > a {
+    color: var(--text-secondary);
+    text-decoration: none;
+    padding: 0.5rem 1rem;
+    border-radius: var(--border-radius-pill);
+    transition: all 0.3s ease;
+    font-weight: 500;
+}
+
+.nav-menu > li:hover > a, .nav-menu > li > a.active {
+    background-color: var(--primary-color);
+    color: var(--text-on-primary);
+}
+
+/* Change icon color on hover */
+.nav-menu > li > a:hover .nav-icon {
+    stroke: var(--text-on-primary);
+    transform: scale(1.1);
+}
+
+.dropdown-menu {
+    visibility: hidden;
+    opacity: 0;
+    position: absolute;
+    top: 130%;
+    left: 0;
+    background: var(--glass-bg);
+    backdrop-filter: blur(var(--backdrop-blur));
+    -webkit-backdrop-filter: blur(var(--backdrop-blur));
+    border: 1px solid var(--glass-border);
+    border-radius: var(--border-radius-card);
+    padding: 0.75rem;
+    min-width: 250px;
+    box-shadow: var(--shadow-soft);
+    transition: all 0.3s ease;
+    transform: translateY(10px);
+}
+
+/*
+==========================================================
+Widen Settings Dropdown Headers
+==========================================================
+*/
+
+/* This new rule sets a narrow width specifically for the "File" dropdown */
+.nav-menu > li:nth-child(1) > .dropdown-menu {
+    min-width: 90px; /* A much narrower width for the Import button */
+}
+
+
+/* This targets the dropdown menu width specifically when it's a child of the "Settings" link by count (e.g., 0, 1, 2) */
+.nav-menu > li:nth-child(2) > .dropdown-menu {
+    min-width: 350px; /* Increase the minimum width of the container */
+}
+
+/* This new rule sets a specific, narrower width for the "API" dropdown menu */
+.nav-menu > li:nth-child(3) > .dropdown-menu {
+    min-width: 250px;
+}
+
+.nav-menu > li:hover .dropdown-menu {
+    visibility: visible;
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.dropdown-menu li {
+    list-style: none;
+    margin-bottom: 0.5rem;
+}
+.dropdown-menu li:last-child {
+    margin-bottom: 0;
+}
+
+.dropdown-item-complex {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.25rem 0.5rem;
+}
+
+.dropdown-item-complex label {
+    font-weight: 500;
+    color: var(--text-secondary);
+    flex-shrink: 0;
+}
+
+.file-label-nav {
+    display: block;
+    padding: 0.25rem 0.25rem;
+    background-color: var(--primary-color);
+    color: var(--text-on-primary);
+    border-radius: var(--border-radius-pill);
+    cursor: pointer;
+    text-align: center;
+    transition: background-color 0.2s ease;
+}
+.file-label-nav:hover {
+    background-color: var(--secondary-color);
+}
+.file-input { display: none; }
+
+.nav-select, .nav-input {
+    width: 100%;
+    padding: 0.5rem;
+    background: rgba(0,0,0,0.2);
+    border: 1px solid var(--glass-border);
+    color: var(--text-primary);
+    border-radius: 8px;
+}
+
+.timer-controls-group {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.nav-btn-icon {
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
+    color: var(--text-primary);
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+.nav-btn-icon:hover {
+    background: var(--primary-color);
+    color: var(--text-on-primary);
+}
+
+.nav-right { gap: 1rem; }
+
+.nav-timer {
+    font-weight: 500;
+    font-size: 1.2rem; /* Slightly larger for better readability */
+    color: var(--primary-color); /* Make the timer text use the accent color */
+    min-width: 100px; /* Adjust width to fit new size */
+    text-align: right;
+    /* Use the new "digital clock" font */
+    font-family: 'Roboto Mono', monospace;
+    /* Add a subtle glow effect */
+    text-shadow: 0 0 8px rgba(var(--primary-color-rgb), 0.5);
+}
+
+
+/*
+==========================================================================
+Modern Theme Toggle Switch
+==========================================================================
+*/
+
+/* --- Main Container for the entire toggle component --- */
+.theme-toggle-container {
+    display: flex; /* Aligns the text and the switch side-by-side */
+    align-items: center; /* Vertically centers the items */
+    gap: 0.75rem; /* Adds a small space between the text and the switch */
+}
+
+/* --- The "Dark Mode" / "Light Mode" text label --- */
+.theme-toggle-text {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--text-secondary); /* Uses the secondary text color from your theme */
+    transition: color 0.3s ease;
+}
+
+/* --- The main body of the switch (the "track") --- */
+.theme-toggle-switch {
+    position: relative; /* Establishes a positioning context for the thumb and icons */
+    display: flex;
+    align-items: center;
+    justify-content: space-around; /* Spreads the sun and moon icons out */
+    width: 60px; /* Width of the switch */
+    height: 30px; /* Height of the switch */
+    background-color: rgba(0,0,0,0.3); /* A dark, semi-transparent background */
+    border-radius: var(--border-radius-pill); /* Makes it pill-shaped */
+    border: 1px solid var(--glass-border); /* A subtle border to match your theme */
+    cursor: pointer;
+}
+
+/* --- Styling for the Sun and Moon Icons --- */
+.theme-toggle-switch .fa-sun,
+.theme-toggle-switch .fa-moon {
+    font-size: 0.8rem;
+    color: var(--text-secondary); /* Default color for the icons */
+}
+
+/* --- The circular part that slides back and forth --- */
+.toggle-thumb {
+    position: absolute; /* Allows us to move it precisely within the switch */
+    top: 2px; /* Small offset from the top */
+    left: 3px; /* Starts on the left side */
+    width: 24px; /* Diameter of the circle */
+    height: 24px; /* Diameter of the circle */
+    background-color: var(--primary-color); /* Uses your bright yellow accent color */
+    border-radius: 50%; /* Makes it a perfect circle */
+    transition: transform 0.3s ease-in-out; /* This creates the smooth sliding animation */
+}
+
+/* --- "Dark Mode" Active State --- */
+/* This is a special rule that applies when the body has the data-theme="dark" attribute */
+html[data-theme="dark"] .toggle-thumb {
+    /* When in dark mode, move the thumb 29px to the right */
+    transform: translateX(29px);
+}
+
+
+.nav-progress-container {
+    width: 150px;
+    position: relative;
+    height: 20px;
+}
+.nav-progress-bar {
+    width: 100%;
+    /* Make the bar thinner */
+    height: 6px;
+    background: rgba(0, 0, 0, 0.5); /* Darker, more transparent track */
+    border-radius: var(--border-radius-pill);
+    overflow: hidden;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    border: 1px solid rgba(255, 255, 255, 0.05); /* Add a subtle edge highlight */
+}
+#progress-fill {
+    height: 100%;
+    width: 0;
+    /* Add a subtle gradient for depth */
+    background-image: linear-gradient(to bottom, var(--primary-color), var(--secondary-color));
+    border-radius: var(--border-radius-pill);
+    transition: width 0.3s ease;
+    /* Add an inner glow effect */
+    box-shadow: inset 0 0 5px rgba(255, 255, 255, 0.3);
+}
+#progress-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: var(--text-primary);
+    font-size: 0.75rem;
+    font-weight: 600;
+    /* Sharpen the text against the bar */
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
+    display: none;
+}
+
+.theme-btn-nav {
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
+    color: var(--text-primary);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 1.2rem;
+    transition: all 0.3s ease;
+}
+.theme-btn-nav:hover {
+    background: var(--primary-color);
+    color: var(--text-on-primary);
+    transform: rotate(15deg) scale(1.1);
+}
+
+/*
+==========================================================================
+    Main Content & Quiz Container
+==========================================================================
+*/
+.main-content {
+    display: flex;
+    justify-content: center;
+    padding: 0 1rem;
+}
+
+.quiz-container {
+    background: var(--container-bg);
+    border-radius: var(--border-radius-card);
+    border: 1px solid var(--glass-border);
+    padding: var(--spacing-lg);
+    width: 100%;
+    max-width: 800px;
+    margin-top: 2rem;
+}
+
+.question-container {
+    background: var(--container-bg);
+    border-radius: var(--border-radius-card);
+    padding: var(--spacing-lg);
+    margin-bottom: var(--spacing-lg);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.question-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: var(--spacing-md);
+    margin-bottom: var(--spacing-md);
+}
+
+.question {
+    font-size: 1.15rem;
+    font-weight: 500;
+    line-height: 1.5;
+    flex-grow: 1;
+}
+
+.question-hint {
+    display: block;
+    font-size: 0.85rem;
+    font-style: italic;
+    color: var(--text-secondary);
+    margin-top: 0.25rem;
+    font-weight: 400;
+}
+
+/*
+==========================================================================
+    MERGED & ADAPTED: Interactive & Feedback Styles
+==========================================================================
+*/
+
+/* --- Answer Options --- */
+fieldset.answers {
+    border: none;
+    padding: 0;
+    margin: 0 0 var(--spacing-md) 0;
+}
+
+.answer-option {
+    display: flex;
+    align-items: center;
+    margin-bottom: 0.5rem;
+    padding: var(--spacing-md);
+    border-radius: var(--border-radius-sm);
+    cursor: pointer;
+    transition: background-color 0.15s ease;
+    border: 1px solid transparent;
+}
+
+.answer-option:hover {
+    background-color: rgba(255, 255, 255, 0.08);
+}
+
+.answer-input {
+    margin-right: var(--spacing-md);
+    transform: scale(1.2);
+    accent-color: var(--primary-color);
+    cursor: pointer;
+    flex-shrink: 0;
+}
+
+.answer-label {
+    flex-grow: 1;
+    font-size: 0.95rem;
+    color: var(--text-primary);
+    cursor: pointer;
+    user-select: none;
+}
+
+/* --- Disabled State for Answers --- */
+.answer-input:disabled {
+    cursor: not-allowed;
+    accent-color: #555;
+}
+.answer-input:disabled + .answer-label {
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+.answer-option:has(.answer-input:disabled) {
+    cursor: not-allowed;
+    background-color: transparent;
+    opacity: 0.6;
+}
+.answer-option:has(.answer-input:disabled):hover {
+    background-color: transparent;
+}
+
+/* --- Submit & General Purpose Buttons --- */
+.submit-btn, .modal-btn, .exam-nav-btn, .grade-exam-btn {
+    border-radius: var(--border-radius-pill);
+    border: none;
+    padding: 0.8rem 2rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: transform 0.2s ease, background-color 0.2s ease;
+    background-color: var(--primary-color);
+    color: var(--text-on-primary);
+}
+.submit-btn:hover:not(:disabled), .modal-btn:hover:not(:disabled), .exam-nav-btn:hover:not(:disabled), .grade-exam-btn:hover:not(:disabled) {
+    background-color: var(--secondary-color);
+    transform: translateY(-3px);
+}
+.submit-btn:disabled, .modal-btn:disabled, .exam-nav-btn:disabled, .grade-exam-btn:disabled {
+    background-color: #555;
+    color: #999;
+    cursor: not-allowed;
+    opacity: 0.6;
+    transform: none;
+}
+.exam-nav-btn.secondary { background-color: #6c757d; }
+.exam-nav-btn.secondary:hover:not(:disabled) { background-color: #5a6268; }
+.grade-exam-btn { background-color: var(--success-color); }
+.grade-exam-btn:hover:not(:disabled) { background-color: #16a34a; }
+
+
+/* --- Explain & Flag Icons --- */
+.explain-container, .flag-container {
+    cursor: pointer;
+    padding: 0.25rem;
+}
+.explain-icon, .flag-icon {
+    font-size: 1.1rem;
+    color: var(--text-secondary);
+    transition: color 0.2s ease, transform 0.2s ease;
+}
+.explain-icon:hover, .flag-icon:hover {
+    transform: scale(1.2);
+    color: var(--primary-color);
+}
+.explain-icon.disabled {
+    color: #555;
+    cursor: not-allowed;
+    transform: none;
+}
+.flag-icon.flagged {
+    color: var(--error-color);
+}
+.flag-icon.flagged:hover {
+    color: #f87171; /* Lighter red on hover when flagged */
+}
+
+
+/* --- Feedback Text & Answer Labels --- */
+.feedback {
+    margin-top: var(--spacing-md);
+    font-weight: 500;
+    text-align: center;
+    color: var(--text-on-primary);
+    min-height: 24px;
+    padding: 0.5rem 1rem;
+    border-radius: var(--border-radius-sm);
+    font-size: 0.9rem;
+}
+.feedback.correct { background-color: var(--success-color); }
+.feedback.incorrect { background-color: var(--error-color); }
+
+.answer-label.correct {
+    font-weight: 600;
+    color: var(--success-color) !important;
+}
+.answer-label.incorrect {
+    color: var(--error-color) !important;
+    text-decoration: line-through;
+    opacity: 0.7;
+}
+.answer-label.missed {
+    font-weight: normal;
+    background-color: rgba(var(--success-color-rgb), 0.15);
+    border: 1px solid rgba(var(--success-color-rgb), 0.4);
+    border-radius: var(--border-radius-sm);
+    padding: 2px 4px;
+    margin: -2px -4px;
+}
+
+/*
+==========================================================================
+    MERGED & ADAPTED: Modal & Review Screen Styles
+==========================================================================
+*/
+.modal-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+    z-index: 2000;
+}
+.modal-container.show {
+    opacity: 1;
+    visibility: visible;
+}
+.modal-content {
+    background: var(--container-bg);
+    padding: var(--spacing-lg);
+    border-radius: var(--border-radius-card);
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--shadow-soft);
+    text-align: center;
+    width: 90%;
+    max-width: 450px;
+    transform: scale(0.9);
+    transition: transform 0.3s ease;
+}
+.modal-container.show .modal-content {
+    transform: scale(1);
+}
+#modal-title {
+    margin-top: 0;
+    color: var(--primary-color);
+}
+#modal-score {
+    font-size: 1.2rem;
+    white-space: pre-wrap;
+    margin-bottom: var(--spacing-lg);
+    text-align: center;
+}
+.modal-actions {
+    display: flex;
+    justify-content: center;
+    gap: var(--spacing-md);
+}
+#retake-quiz-btn { background-color: #6c757d; }
+#retake-quiz-btn:hover { background-color: #5a6268; }
+.modal-btn.review { background-color: var(--primary-color); }
+.modal-btn.review:hover { background-color: var(--secondary-color); }
+.modal-btn.import { background-color: #17a2b8; }
+.modal-btn.import:hover { background-color: #138496; }
+
+/* --- Exam Mode & Review --- */
+.question-counter {
+    text-align: center;
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: var(--text-secondary);
+    margin-bottom: var(--spacing-lg);
+}
+.exam-navigation {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: var(--spacing-lg);
+    padding-top: var(--spacing-md);
+    border-top: 1px solid var(--glass-border);
+}
+.review-screen-container {
+    padding: var(--spacing-lg);
+    text-align: center;
+}
+.review-instructions {
+    max-width: 600px;
+    margin: 0 auto var(--spacing-lg);
+    color: var(--text-secondary);
+}
+.review-filters {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-bottom: var(--spacing-lg);
+}
+.filter-btn {
+    padding: 0.5rem 1rem;
+    border: 1px solid var(--glass-border);
+    background-color: transparent;
+    color: var(--text-secondary);
+    border-radius: var(--border-radius-pill);
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+.filter-btn.active, .filter-btn:hover {
+    background-color: var(--primary-color);
+    color: var(--text-on-primary);
+    border-color: var(--primary-color);
+}
+.review-question-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: var(--spacing-md);
+    max-width: 800px;
+    margin: 0 auto var(--spacing-lg);
+}
+.review-question-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--spacing-md);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--border-radius-sm);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    background-color: rgba(255,255,255,0.03);
+}
+.review-question-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    border-color: var(--primary-color);
+}
+.review-question-item.flagged {
+    border-left: 4px solid var(--error-color);
+}
+.review-question-item .fa-flag {
+    color: var(--error-color);
+}
+
+/*
+==========================================================================
+    Provider & Model Selection in Dropdown
+==========================================================================
+*/
+.dropdown-item-full {
+    padding: 0.5rem;
+    margin-top: 0.5rem;
+    border-top: 1px solid var(--glass-border);
+}
+#provider-settings-container { margin-top: 0; }
+.provider-settings {
+    flex-direction: column;
+    gap: 0.75rem;
+    padding: 0;
+    border: none;
+}
+.provider-settings > label {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--text-secondary);
+    margin-bottom: -0.25rem;
+}
+.provider-settings .api-key-input {
+    width: 100%;
+    padding: 0.6rem;
+    background: rgba(0,0,0,0.2);
+    border: 1px solid var(--glass-border);
+    color: var(--text-primary);
+    border-radius: 8px;
+    font-size: 0.9rem;
+    box-sizing: border-box;
+}
+.provider-settings .api-key-input:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 2px rgba(var(--primary-color-rgb), 0.3);
+}
+.model-label {
+    margin-top: 0.5rem;
+    border-top: 1px solid var(--glass-border);
+    padding-top: 0.75rem;
+}
+.model-selection-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+.model-option {
+    display: flex;
+    align-items: center;
+    padding: 0.6rem;
+    border: 1px solid transparent;
+    border-radius: 8px;
+    background-color: rgba(0,0,0,0.15);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    position: relative;
+}
+.model-option:hover {
+    border-color: var(--primary-color);
+    background-color: rgba(var(--primary-color-rgb), 0.1);
+}
+.model-option input[type="radio"] { display: none; }
+.model-option label {
+    flex-grow: 1;
+    color: var(--text-primary);
+    cursor: pointer;
+    font-weight: 400;
+    font-size: 0.9rem;
+}
+.model-option input[type="radio"]:checked + label {
+    color: var(--primary-color);
+    font-weight: 600;
+}
+.model-info-icon {
+    color: var(--text-secondary);
+    transition: color 0.2s ease;
+}
+.model-option:hover .model-info-icon,
+.model-option input[type="radio"]:checked ~ .model-info-icon {
+    color: var(--primary-color);
+}
+
+/*
+==========================================================================
+    MERGED: Tooltip for Model Selection
+==========================================================================
+*/
+
+/* The tooltip container */
+.model-option .tooltip-text {
+    visibility: hidden;
+    width: 220px;
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    border-radius: var(--border-radius-sm);
+    padding: var(--spacing-md);
+    position: absolute;
+    z-index: 10;
+    bottom: 125%; /* Position above the icon */
+    left: 50%;
+    margin-left: -110px; /* Use half of the width to center */
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    font-size: 0.85rem;
+    pointer-events: none; /* Prevents tooltip from interfering with mouse */
+}
+
+/* Arrow for the tooltip */
+.model-option .tooltip-text::after {
+    content: "";
+    position: absolute;
+    top: 100%; /* At the bottom of the tooltip */
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: #333 transparent transparent transparent;
+}
+
+/* Show the tooltip on hover over the info icon */
+.model-option .model-info-icon:hover + .tooltip-text {
+    visibility: visible;
+    opacity: 1;
+}
+
+/*
+==========================================================================
+    Custom Styling for Ollama Dropdown
+==========================================================================
+*/
+
+/* Targets the <select> element specifically for Ollama settings */
+#ollama-settings select {
+    /* Step 1: Remove the default browser appearance */
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+
+    /* Step 2: Apply custom theme styles */
+    width: 100%;
+    padding: 0.6rem;
+    background-color: rgba(0,0,0,0.2);
+    border: 1px solid var(--glass-border);
+    color: var(--text-primary);
+    border-radius: var(--border-radius-sm);
+    font-size: 0.9rem;
+    font-family: inherit;
+    cursor: pointer;
+
+    /* Step 3: Add a custom dropdown arrow using an SVG */
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23a0a0a0' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 0.7rem center;
+    background-size: 1em;
+}
+
+/*
+==========================================================================
+    Fully Custom Dropdown Styles (for all select menus)
+==========================================================================
+*/
+
+.custom-select-container {
+    width: 100%; /* Ensure the container takes up available space */
+}
+
+.custom-select-wrapper {
+    position: relative;
+    width: 100%;
+    font-family: inherit;
+}
+
+.custom-select-trigger {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.6rem;
+    background-color: rgba(0,0,0,0.2);
+    border: 1px solid var(--glass-border);
+    color: var(--text-primary);
+    border-radius: var(--border-radius-sm);
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: border-color 0.2s ease;
+}
+
+.custom-select-wrapper.open .custom-select-trigger {
+    border-color: var(--primary-color);
+}
+
+.custom-select-trigger .arrow {
+    border: solid var(--text-secondary);
+    border-width: 0 2px 2px 0;
+    display: inline-block;
+    padding: 3px;
+    transform: rotate(45deg);
+    transition: transform 0.3s ease;
+}
+
+.custom-select-wrapper.open .arrow {
+    transform: rotate(-135deg);
+}
+
+.custom-options {
+    visibility: hidden;
+    opacity: 0;
+    position: absolute;
+    top: calc(100% + 5px);
+    left: 0;
+    right: 0;
+    background-color: #2a2a2a;
+    border: 1px solid var(--glass-border);
+    border-radius: var(--border-radius-sm);
+    z-index: 10;
+    max-height: 200px;
+    overflow-y: auto;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.custom-select-wrapper.open .custom-options {
+    visibility: visible;
+    opacity: 1;
+}
+
+.custom-option {
+    padding: 0.75rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    color: var(--text-primary);
+}
+
+.custom-option:hover,
+.custom-option.selected {
+    background-color: var(--primary-color);
+    color: var(--text-on-primary);
+}
+
+/*
+==========================================================================
+Opaque Background for Active Dropdowns
+==========================================================================
+*/
+
+:root {
+    /* Define a new, more opaque background color specifically for open dropdowns. */
+    --dropdown-bg-opaque: rgba(40, 40, 40, 1); /* A dark grey with 95% opacity */
+}
+
+/* --- For the main navigation dropdowns (File, Settings, API) --- */
+/* This rule applies the opaque background only when you are hovering over a main menu item. */
+.nav-menu > li:hover > .dropdown-menu {
+    background: var(--dropdown-bg-opaque);
+    backdrop-filter: blur(30px); /* You can adjust blur for the more opaque background */
+    -webkit-backdrop-filter: blur(30px);
+}
+
+/* --- For the custom select dropdowns (Mode, Provider, Ollama) --- */
+/* This rule applies the opaque background only when the dropdown has been clicked open. */
+.custom-select-wrapper.open .custom-options {
+    background-color: var(--dropdown-bg-opaque);
+    backdrop-filter: blur(30px);
+    -webkit-backdrop-filter: blur(30px);
+}
+
+/*
+==========================================================================
+LLM Chat Interface Styles
+==========================================================================
+*/
+
+/* --- "Continue Discussion" Button --- */
+/* A more subtle "ghost button" style that becomes solid on hover. */
+.continue-discussion-btn {
+    display: inline-block; /* Allows for better alignment */
+    margin-top: var(--spacing-md);
+    padding: 0.5rem 1rem;
+    font-size: 0.8rem;
+    font-weight: 600;
+    /* Uses the secondary text color for a less prominent look */
+    color: var(--text-secondary);
+    background-color: transparent;
+    border: 1px solid var(--glass-border); /* A subtle border */
+    border-radius: var(--border-radius-pill); /* Consistent pill shape */
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-align: center;
+}
+
+.continue-discussion-btn:hover {
+    background-color: var(--primary-color);
+    color: var(--text-on-primary); /* Use dark text on the yellow background */
+    border-color: var(--primary-color);
+    transform: translateY(-2px); /* A slight lift effect */
+}
+
+
+/* --- Main Chat Container --- */
+/* Applying the glassmorphism effect for consistency with the nav bar. */
+.llm-chat-interface-container {
+    margin-top: var(--spacing-md);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--border-radius-card); /* Softer, rounded container */
+    background: var(--glass-bg);
+    backdrop-filter: blur(var(--backdrop-blur));
+    -webkit-backdrop-filter: blur(var(--backdrop-blur));
+    display: flex;
+    flex-direction: column;
+    overflow: hidden; /* Important for containing the rounded corners */
+}
+
+/* --- Message History Area --- */
+.chat-messages {
+    flex-grow: 1;
+    height: 300px; /* A bit taller for more context */
+    overflow-y: auto; /* For scrolling */
+    padding: var(--spacing-md);
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md); /* More space between messages */
+}
+
+/* --- General Message Bubble Style --- */
+.chat-message {
+    padding: 0.5rem 1rem;
+    border-radius: var(--border-radius-card);
+    max-width: 85%;
+    word-wrap: break-word;
+    line-height: 1.5;
+    box-shadow: none;
+}
+
+/* --- User's Message Bubble --- */
+.chat-message-user {
+    background-color: var(--message-color);
+    color: #ffffff; /* White text on the blue background */
+    align-self: flex-end;
+    margin-left: auto;
+}
+
+/* --- LLM's Message Bubble --- */
+/* Using a subtle background that blends with the container. */
+.chat-message-llm {
+    background-color: rgba(0, 0, 0, 0.15);
+    color: var(--text-primary);
+    align-self: flex-start;
+    margin-right: auto;
+}
+/* Ensure dark theme LLM bubbles are also subtle */
+html[data-theme="dark"] .chat-message-llm {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+
+/* --- Chat Input Area --- */
+/* A container for the input field and send button */
+.chat-input-area {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+
+    /* Make the container wide but with some padding on the sides */
+    width: 90%;
+    max-width: 800px; /* Set a max-width for very large screens */
+    margin: 0 auto;   /* This centers the container */
+    padding: var(--spacing-md) 0; /* Add padding only on the top/bottom */
+
+    /* Remove the old background and border for a cleaner look */
+    background-color: transparent;
+    border-top: none;
+}
+html[data-theme="dark"] .chat-input-area {
+    background-color: transparent;
+}
+
+.chat-input-wrapper {
+    flex-grow: 1;
+    position: relative;
+    max-height: 140px; /* The maximum height before scrolling starts */
+    overflow-y: auto;
+    border: 1px solid var(--glass-border);
+    border-radius: var(--border-radius-sm);
+    background-color: var(--container-bg);
+    display: flex;
+    box-sizing: border-box;
+}
+
+/* This adds the focus effect to the wrapper */
+.chat-input-wrapper:focus-within {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 1px rgba(var(--primary-color-rgb), 0.4);
+}
+
+/* --- Text Input Field --- */
+
+/*
+Using .chat-input-wrapper textarea.chat-input, to create a highly specific rule that will override any other generic textarea styles.
+*/
+
+.chat-input-wrapper textarea.chat-input {
+    width: 100%;
+    flex-grow: 1;
+    padding: 1rem 2rem 1rem 1.25rem;
+    background-color: transparent;
+    border: none;
+    resize: none;
+    overflow-y: hidden !important;
+    color: var(--text-primary);
+    font-family: inherit;
+    font-size: 1rem;
+    box-sizing: border-box;
+}
+
+.chat-input:focus {
+    outline: none;
+    box-shadow: none;
+}
+
+/* --- Send Button --- */
+.send-chat-btn {
+    flex-shrink: 0; /* Prevents the button from shrinking */
+    width: 50px; /* A bit wider to fit the arrow */
+    height: 44px;
+    border-radius: var(--border-radius-pill); /* Pill-shaped button */
+    border: none;
+    background-color: var(--primary-color);
+    color: var(--text-on-primary);
+    cursor: pointer;
+    font-size: 1.5rem; /* Larger font size for the arrow symbol */
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* padding-bottom: 4px; Helps visually center the arrow */
+    transition: transform 0.2s ease, background-color 0.2s ease;
+}
+
+.send-chat-btn:hover:not(:disabled) {
+    transform: scale(1.1); /* Pop effect on hover */
+    background-color: var(--secondary-color);
+}
+.send-chat-btn:disabled {
+    background-color: #555;
+    color: #888;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* --- Loading Indicator for Send Button --- */
+
+/* This targets the dots inside the button when it's disabled */
+.send-chat-btn:disabled .loading-dot {
+    /* Sets up the animation */
+    animation: loading-pulse 1.4s infinite;
+    animation-fill-mode: both;
+    display: inline-block; /* Required for animation to work correctly */
+}
+
+/* This adds a small delay to each subsequent dot, creating the wave effect */
+.send-chat-btn:disabled .loading-dot:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.send-chat-btn:disabled .loading-dot:nth-child(3) {
+    animation-delay: 0.4s;
+}
+
+/* This is the actual animation definition */
+@keyframes loading-pulse {
+    0% {
+        opacity: 0.2;
+    }
+    20% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0.2;
+    }
+}
+
+/*
+==========================================================================
+Theme-Aware Send Button
+==========================================================================
+*/
+
+/*
+ * This block overrides the default send button appearance specifically for dark mode.
+ * It inverts the button's colors to have a dark background with a bright,
+ * high-contrast arrow, fitting the overall dark theme.
+*/
+html[data-theme="dark"] .send-chat-btn {
+    background-color: var(--container-bg); /* Use the theme's dark container background */
+    color: var(--primary-color);           /* Make the arrow icon use the bright accent color */
+    border: 1px solid var(--glass-border); /* Add a subtle border for definition */
+}
+
+/*
+ * This handles the hover effect for the send button in dark mode.
+ * On hover, the button fills with the bright accent color, and the arrow
+ * becomes dark, providing clear visual feedback.
+*/
+html[data-theme="dark"] .send-chat-btn:hover:not(:disabled) {
+    background-color: var(--primary-color);
+    color: var(--text-on-primary);
+}
+
+/*
+==========================================================================
+Modern Timer Input Controls
+==========================================================================
+*/
+
+/* Main container for the new timer input */
+.modern-timer-input {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem; /* Small gap between buttons and input */
+}
+
+/* The text field that displays the time */
+.time-display-input {
+    width: 50px; /* Set a fixed width */
+    padding: 0.4rem;
+    background: rgba(0,0,0,0.4);
+    border: 1px solid var(--glass-border);
+    color: var(--text-primary);
+    border-radius: var(--border-radius-sm);
+    text-align: center;
+    font-weight: 600;
+    font-size: 0.9rem;
+    -moz-appearance: textfield; /* Hides number spinners in Firefox */
+}
+
+/* Hide number input spinners in Chrome, Safari, etc. */
+.time-display-input::-webkit-outer-spin-button,
+.time-display-input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Styling for the new '+' and '-' buttons */
+.time-adjust-btn {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%; /* Make them circular */
+    border: 1px solid var(--glass-border);
+    background-color: rgba(255, 255, 255, 0.1);
+    color: var(--text-secondary);
+    font-size: 1.2rem;
+    font-weight: 400;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-top: 4px;
+    /*padding-bottom: -4px; /* Optical alignment for symbols */
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.time-adjust-btn:hover {
+    background-color: var(--primary-color);
+    color: var(--text-on-primary);
+}
+
+/*
+==========================================================================
+Send Button
+==========================================================================
+*/
+
+/* Target the button itself */
+.chat-input-area .send-chat-btn {
+    text-transform: none; /* Prevents text from becoming uppercase */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Target the SPAN inside the button */
+.chat-input-area .send-chat-btn span {
+    font-size: 1.5rem;  /* Make the arrow symbol large */
+    line-height: 1;     /* Improve vertical centering */
+    margin-top: 0;   /* Fine-tune vertical position, to move arrow down use positive value, to move arrow up, use negative value */
+    margin-left: 2px; /* To move arrow RIGHT, use a positive value, to move arrow LEFT, use a negative value */
+}
+
+/*
+==========================================================================
+Modern Reusable Scrollbar
+==========================================================================
+    - This creates a reusable class for modern scrollbars.
+    - Apply the `.modern-scrollbar` class to any container that needs
+      this style (e.g., .chat-messages, .chat-input).
+*/
+
+/* --- Firefox Scrollbar Styling --- */
+.modern-scrollbar {
+    scrollbar-color: var(--text-secondary) transparent;
+    scrollbar-width: thin;
+}
+
+/* --- Webkit (Chrome, Safari, Edge) Scrollbar Styling --- */
+
+/* 1. The overall scrollbar element */
+.modern-scrollbar::-webkit-scrollbar {
+    width: 8px;
+}
+
+/* 2. The track (the background the scrollbar sits on) */
+.modern-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+/* 3. The thumb (the draggable part of the scrollbar) */
+.modern-scrollbar::-webkit-scrollbar-thumb {
+    background-color: var(--text-secondary);
+    border-radius: 20px;
+    border: 12px solid transparent; /* Creates padding around the thumb */
+    background-clip: content-box;
+}
+
+/* 4. The thumb on hover for better user feedback */
+.modern-scrollbar::-webkit-scrollbar-thumb:hover {
+    background-color: var(--primary-color);
+}
+
+/*
+==========================================================================
+Misc. Utilities
+==========================================================================
+*/
+
+/* Utility class to hide an element */
+.element-hidden {
+    display: none !important;
+}
+
+/*
+==========================================================================
+Question Selection Controls
+==========================================================================
+*/
+
+.question-controls-group {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem; /* Space between the number input and the 'All' button */
+}
+
+.nav-btn-text {
+    padding: 0.5rem 1rem;
+    border: 1px solid var(--glass-border);
+    background-color: transparent;
+    color: var(--text-secondary);
+    border-radius: var(--border-radius-pill);
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+/* Style for when the button is active */
+.nav-btn-text.active {
+    background-color: var(--primary-color);
+    color: var(--text-on-primary);
+    border-color: var(--primary-color);
+}
+
+/* --- Specific Styling for Apply Button --- */
+/* This gives the new checkmark button a 'success' look and feel. */
+#apply-question-settings-btn {
+    border: 1px solid var(--primary-color);
+    color: var(--primary-color);
+}
+
+#apply-question-settings-btn:hover:not(:disabled) {
+    background-color: var(--primary-color);
+    color: white;
+    border-color: var(--primary-color);
+}
+
+/* --- Disabled state for nav buttons --- */
+/* This general style will apply to the 'All', 'Apply', and timer buttons when they are disabled. */
+.nav-btn-text:disabled,
+.nav-btn-icon:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+/* Overwrite hover effect for disabled icon buttons */
+.nav-btn-icon:disabled:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--text-primary);
+}
