@@ -35,7 +35,7 @@ export default function CreateQuiz() {
             // STEP C: Construct the exact payload Spring Boot expects (CreateQuizRequestDTO)
             const payload = {
                 title: title,
-                questions: parseResult.questions
+                questions: parseResult.data
             };
 
             // STEP D: POST to the backend
