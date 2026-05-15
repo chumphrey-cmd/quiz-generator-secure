@@ -9,7 +9,7 @@
 <!--        <relativePath></relativePath> &lt;!&ndash; lookup parent from repository &ndash;&gt;-->
     </parent>
     <groupId>io.chumahumphrey.qagen</groupId>
-    <artifactId>qa-gen-backend</artifactId>
+    <artifactId>qa-gen-root</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>qa-gen-root</name>
     <description>qa-gen-backend</description>

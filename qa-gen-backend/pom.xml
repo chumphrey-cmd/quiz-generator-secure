@@ -9,10 +9,9 @@
         <relativePath>../pom.xml</relativePath> <!-- lookup parent from repository -->
     </parent>
     <groupId>io.chumahumphrey.qagen</groupId>
-    <artifactId>qa-gen-backend</artifactId>
+    <artifactId>qa-gen-root</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>qa-gen-backend</name>
-    <description>qa-gen-backend</description>
+    <description>Connects to the root pom.xml dependency.</description>
     <url/>
     <licenses>
         <license/>
