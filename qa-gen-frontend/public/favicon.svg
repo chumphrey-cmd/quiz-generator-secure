@@ -1,12 +1,12 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 32 32">
-    <rect width="28" height="28" rx="13" ry="13" fill="#ffffff" />
+<!--<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 32 32">-->
+<!--    <rect width="32" height="32" rx="4" ry="4" fill="#ffffff" />-->
 
-    <text x="6" y="16" font-family="" font-weight="900" font-style="italic" font-size="17" fill="#0000000">Q</text>
+<!--    <text x="3" y="20" font-family="" font-weight="900" font-style="italic" font-size="25" fill="#0000000">Q</text>-->
 
-    <text x="15" y="24" font-family="" font-weight="900" font-style="italic" font-size="11" fill="#0000000">A</text>
-</svg>
-
-<!--<svg fill="#F0DB4F" role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">-->
-<!--    <title>QA-Gen</title>-->
-<!--    <path d="M8.132 7.14v-.99h.992v-.992h5.752v.992h.793v.991h.992v2.777h-.992v.992h-.793v.992h-.992v.992h-.991v2.975h-1.786V12.1h.992v-.992h.992v-.991h.992v-.992h.991v-1.19h-.991v-.992H9.917v.992h-.991v1.983H7.14V7.14Zm-2.578-.198H1.587v10.116h3.967v1.785H0V5.157h5.554zm12.892 0h3.967v10.116h-3.967v1.785H24V5.157h-5.554zm-7.339 10.116h1.786v1.785h-1.786z"/>-->
+<!--    <text x="17" y="29" font-family="" font-weight="900" font-style="italic" font-size="20" fill="#0000000">A</text>-->
 <!--</svg>-->
+
+<svg fill="#ffff" role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+    <title>QA-Gen</title>
+    <path d="M8.132 7.14v-.99h.992v-.992h5.752v.992h.793v.991h.992v2.777h-.992v.992h-.793v.992h-.992v.992h-.991v2.975h-1.786V12.1h.992v-.992h.992v-.991h.992v-.992h.991v-1.19h-.991v-.992H9.917v.992h-.991v1.983H7.14V7.14Zm-2.578-.198H1.587v10.116h3.967v1.785H0V5.157h5.554zm12.892 0h3.967v10.116h-3.967v1.785H24V5.157h-5.554zm-7.339 10.116h1.786v1.785h-1.786z"/>
+</svg>
