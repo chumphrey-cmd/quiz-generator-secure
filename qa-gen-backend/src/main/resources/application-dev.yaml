@@ -1,7 +1,12 @@
 server:
-  port: 8080
+  port: 9090
 
+# Points to my docker compose at the root of my directory.
 spring:
+  docker:
+    compose:
+      file: ../compose.yaml
+
   datasource:
     # This URL matches the port and database name from our docker-compose.yml
     url: jdbc:postgresql://localhost:5434/qagen-db

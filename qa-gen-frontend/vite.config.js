@@ -6,15 +6,15 @@ import { defineConfig } from 'vitest/config';
 export default defineConfig({
     // 1. DEVELOPMENT SERVER CONFIGURATION
     server: {
-        port: 3000, // Forces the dev server to run on localhost:3000
+        port: 4000, // Forces the dev server to run on localhost:3000
         strictPort: true, // Fails if port 3000 is taken, rather than randomly assigning another port
         hmr: {
-            clientPort: 3000, // Ensures Hot Module Replacement (live reloading) points to the correct port
+            clientPort: 4000, // Ensures Hot Module Replacement (live reloading) points to the correct port
         },
         proxy: {
             // Intercepts API calls starting with '/api' and routes them to your backend server
             '/api': {
-                target: 'http://localhost:8080', // Your backend URL
+                target: 'http://localhost:9090', // Your backend URL
                 changeOrigin: true, // Changes the origin of the host header to the target URL
             },
         },

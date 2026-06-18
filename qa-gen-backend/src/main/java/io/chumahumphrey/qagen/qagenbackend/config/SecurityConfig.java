@@ -79,6 +79,7 @@ public class SecurityConfig {
         // Explicitly allow requests from the local Vite React development server
         /// NOTE: This is the ONLY place in your Java code where you define that frontend origin.
         configuration.setAllowedOrigins(List.of("http://localhost:5173"));
+        configuration.setAllowedOrigins(List.of("http://localhost:4000"));
 
         // Standard HTTP methods required for a full CRUD REST API
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
