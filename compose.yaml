@@ -1,9 +1,9 @@
 services:
   postgres:
-    image: postgres:latest
+    image: postgres:17 # pinned — postgres:latest pulls v18 which breaks /data mount path
     restart: always
     volumes:
-      - ./postgres-data:/var/lib/postgresql
+      - postgres_data:/var/lib/postgresql
 
     environment:
       POSTGRES_DB: qagen-db
@@ -12,3 +12,13 @@ services:
       POSTGRES_HOST_AUTH_METHOD: password
     ports:
       - "5434:5432" # 5434 (external port) : 5432 (internal port)
+
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U user -d qagen-db" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+volumes:
+  postgres_data:

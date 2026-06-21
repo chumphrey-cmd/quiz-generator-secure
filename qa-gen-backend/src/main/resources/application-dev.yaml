@@ -6,6 +6,7 @@ spring:
   docker:
     compose:
       file: ../compose.yaml
+      lifecycle-management: start_only # only start the compose if it's not already running.
 
   datasource:
     # This URL matches the port and database name from our docker-compose.yml
