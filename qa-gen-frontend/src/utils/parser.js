@@ -11,7 +11,7 @@ export function parseAndMapQuestions(text) {
 
     // 3. Return errors if validation fails
     if (errors.length > 0) {
-        return { success: false, errors: errors, data: null };
+        return {success: false, errors: errors, data: null};
     }
 
 // 4. Map to QuestionDTO expected by Java backend
@@ -26,7 +26,7 @@ export function parseAndMapQuestions(text) {
             .map(a => `${a.letter}. ${a.text}`)
     }));
 
-    return { success: true, errors: [], data: mappedQuestions };
+    return {success: true, errors: [], data: mappedQuestions};
 }
 
 // Private function: Parses text into JS objects
@@ -79,7 +79,7 @@ function parseRawText(text) {
                         correctAnswers.push(letter);
                     }
 
-                    answers.push({ letter, text });
+                    answers.push({letter, text});
                 } else {
                     // If the line doesn't start with an uppercase letter and period, assume it's not an answer and stop processing answers for this question.
                     break;
@@ -87,17 +87,14 @@ function parseRawText(text) {
                 lineIndex++;
             }
 
-            // Check if correctAnswers array has at least one entry.
-            if (answers.length >= 2 && correctAnswers.length > 0) {
-                questions.push({
-                    // Original number, will be renumbered after shuffle
-                    number: questionNumber,
-                    text: questionText,
-                    answers: answers,
-                    // Store the array of correct letters
-                    correct: correctAnswers
-                });
-            }
+            questions.push({
+                // Original number, will be renumbered after shuffle
+                number: questionNumber,
+                text: questionText,
+                answers: answers,
+                // Store the array of correct letters
+                correct: correctAnswers
+            });
         }
     });
 
@@ -130,15 +127,6 @@ function validateQuestions(questions) {
 
         if (question.answers.length < 2) {
             errors.push(`Question ${question.number}: Must have at least two options.`);
-        }
-        // Check if the stored 'correct' letters exist in the parsed answers. Only run this check if question.correct is a valid array (helps avoid errors)
-        if (Array.isArray(question.correct) && question.correct.length > 0) {
-            const answerLetters = question.answers.map(ans => ans.letter);
-            const invalidCorrectLetters = question.correct.filter(correctLetter => !answerLetters.includes(correctLetter));
-
-            if (invalidCorrectLetters.length > 0) {
-                errors.push(`Question ${question.number}: Marked answers ('${invalidCorrectLetters.join(', ')}') do not match options.`);
-            }
         }
 
         // Check answer letters sequence (A, B, C, ...)
