@@ -1,6 +1,4 @@
-import { screen } from "@testing-library/dom";
 import { parseAndMapQuestions } from "../parser.js";
-import {backgroundRepeat} from "jsdom/lib/generated/css-property-descriptors.js";
 
 describe('parseAndMapQuestions', () => {
 
