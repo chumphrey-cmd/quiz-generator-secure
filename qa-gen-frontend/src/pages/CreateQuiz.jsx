@@ -101,10 +101,11 @@ export default function CreateQuiz() {
 
                         {/* Instructional Tip Box */}
                         <div className="bg-yellow-50 border-2 border-textMain p-3 mb-2 shadow-brutal-sm text-sm font-bold text-textMain italic">
-                            Format Tip: "1. Question" → "A. Option" → "*" for correct answer.
+                            Format Tip: Use (*) to indicate correct answer(s).
                         </div>
 
                         <textarea
+                            id="quizTextBox"
                             required
                             rows="12"
                             placeholder="1. What is the capital of France?&#10;A. Berlin&#10;B. Madrid&#10;C. Paris*&#10;D. Rome"
