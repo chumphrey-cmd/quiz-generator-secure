@@ -51,20 +51,14 @@ export default function CreateQuiz() {
     };
 
     return (
-        /* bg-page: Maps to our theme's background color.
-           transition-colors: Ensures smooth switching if we toggle Dark Mode. */
         <div className="min-h-screen bg-page p-6 sm:p-10 transition-colors duration-300">
 
-            {/* Main Card:
-                - border-[3px]: The signature thick border.
-                - shadow-brutal: Our 4px hard solid shadow.
-                - max-w-4xl: Keeps the form readable and centered.
-            */}
+            {/* Main Card:*/}
             <div className="max-w-4xl mx-auto bg-container border-[3px] border-textMain p-8 shadow-brutal">
 
-                <h2 className="text-4xl font-black text-textMain mb-2 uppercase tracking-tighter">
+                <h1 className="text-4xl font-black text-textMain mb-2 uppercase tracking-tighter">
                     Create New Quiz
-                </h2>
+                </h1>
 
                 {/* Error Section: Styled as a "Brutal" alert box */}
                 {errors.length > 0 && (
@@ -82,9 +76,11 @@ export default function CreateQuiz() {
 
                     {/* Title Input Group */}
                     <div className="flex flex-col gap-2">
-                        <label className="text-xl font-black text-textMain uppercase">Quiz Title</label>
+
+                        <label htmlFor="quizTitle" className="text-xl font-black text-textMain uppercase">Quiz Title</label>
                         <input
                             type="text"
+                            id="quizTitle"
                             required
                             placeholder="e.g., Demo Quiz 1"
                             /* shadow-brutal-sm: A 2px hard shadow for a tactile feel.
@@ -97,29 +93,25 @@ export default function CreateQuiz() {
 
                     {/* Text Area Group */}
                     <div className="flex flex-col gap-2">
-                        <label className="text-xl font-black text-textMain uppercase">Paste Quiz Text</label>
 
                         {/* Instructional Tip Box */}
                         <div className="bg-yellow-50 border-2 border-textMain p-3 mb-2 shadow-brutal-sm text-sm font-bold text-textMain italic">
                             Format Tip: Use (*) to indicate correct answer(s).
                         </div>
 
+                        <label htmlFor="quizTextBox" className="text-xl font-black text-textMain uppercase">Paste Quiz Text</label>
                         <textarea
                             id="quizTextBox"
                             required
                             rows="12"
                             placeholder="1. What is the capital of France?&#10;A. Berlin&#10;B. Madrid&#10;C. Paris*&#10;D. Rome"
-                            /* font-mono: Makes formatted text easier to read for structural checks. */
                             className="w-full border-[3px] border-textMain p-4 bg-container text-textMain font-mono text-base shadow-brutal-sm focus:outline-none focus:border-inputFocus focus:translate-x-[2px] focus:translate-y-[2px] focus:shadow-none transition-all placeholder:text-textSub placeholder:opacity-40"
                             value={rawText}
                             onChange={(e) => setRawText(e.target.value)}
                         />
                     </div>
 
-                    {/* Submit Button:
-                        - bg-primary: Uses your vibrant Lime Green.
-                        - active:translate-x-[4px]: The physical "push-down" button effect.
-                    */}
+                    {/* Submit Button*/}
                     <button
                         type="submit"
                         disabled={isSubmitting}

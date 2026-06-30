@@ -1,7 +1,18 @@
 import {render, screen} from "@testing-library/react";
 import CreateQuiz from "../CreateQuiz.jsx";
 import {MemoryRouter} from "react-router-dom";
-import {container} from "jsdom/lib/generated/css-property-descriptors.js";
+import {userEvent} from "@testing-library/user-event/dist/cjs/setup/index.js";
+import api from "../../services/api.js";
+import {parseAndMapQuestions} from "../../utils/parser.js";
+
+const mockNavigate = vi.fn();
+vi.mock('react-router-dom', async () => {
+    const actual = await vi.importActual('react-router-dom');
+    return {
+        ...actual,
+        useNavigate: () => mockNavigate,
+    };
+});
 
 describe('CreateQuiz', () => {
 
@@ -17,13 +28,58 @@ describe('CreateQuiz', () => {
         expect(screen.getByRole('heading', {name: /create new quiz/i})).toBeVisible();
     });
 
-    it('should render the heading and text field to input a quiz title', () => {
-        expect(screen.getByText(/quiz title/i)).toBeVisible();
+    it('should render the heading, text field to input a quiz title, text box to paste the content of your quiz, and the save quiz button', () => {
+        expect(screen.getByRole('textbox', {name: /quiz title/i})).toBeVisible();
         expect(screen.getByPlaceholderText(/e\.g\., demo quiz 1/i)).toBeVisible();
-        expect(screen.getByPlaceholderText(/1\. what is the capital of france/i)).toBeVisible();
-    });
 
-    it('should display Save Quiz button', () => {
+        expect(screen.getByRole('textbox', {name: /paste quiz text/i})).toBeVisible();
+        expect(screen.getByPlaceholderText(/what is the capital of france/i)).toBeVisible();
         expect(screen.getByRole('button', {name: /save quiz/i})).toBeVisible();
     });
+
+    it('should allow the user input information into all field, click submit, and be redirected back to dashboard', async () => {
+        const spyApi = vi.spyOn(api, 'post').mockResolvedValue({
+            data : { message: "Success"}
+        });
+        const spyParser = vi.fn(parseAndMapQuestions);
+
+        const user = userEvent.setup();
+        const quizTitle = screen.getByRole('textbox', {name: (/quiz title/i)});
+        const quizPasteText = screen.getByRole('textbox', {name: /paste quiz text/i});
+        const quizSubmission = screen.getByRole('button', {name: /save quiz/i});
+
+        await user.type(quizTitle, 'Demo Quiz 1');
+        await user.type(quizPasteText, '1. What is the capital of France?\n' +
+            'A. Berlin\n' +
+            'B. Madrid\n' +
+            'C. Paris*\n' +
+            'D. Rome\n' +
+            '\n' +
+            '2. Which planet is known as the Red Planet?\n' +
+            'A. Earth\n' +
+            'B. Mars*\n' +
+            'C. Jupiter\n' +
+            'D. Saturn\n' +
+            '\n' +
+            '3. Select all of the following that are numbers.\n' +
+            'A. 1*\n' +
+            'B. 2*\n' +
+            'C. 3*\n' +
+            'D. $\n' +
+            'E. 5*\n' +
+            'F. ^');
+
+        await user.click(quizSubmission);
+
+        expect(spyApi).toHaveBeenCalledTimes(1);
+        expect(spyApi).toHaveBeenCalledWith(
+            '/api/quizzes',
+            expect.objectContaining({
+                title: 'Demo Quiz 1',
+                questions: expect.any(Array)
+            })
+        );
+        expect(mockNavigate).toHaveBeenCalledWith('/dashboard');
+    });
+
 });
