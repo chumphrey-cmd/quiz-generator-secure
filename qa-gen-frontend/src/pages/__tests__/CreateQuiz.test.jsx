@@ -41,7 +41,6 @@ describe('CreateQuiz', () => {
         const spyApi = vi.spyOn(api, 'post').mockResolvedValue({
             data : { message: "Success"}
         });
-        const spyParser = vi.fn(parseAndMapQuestions);
 
         const user = userEvent.setup();
         const quizTitle = screen.getByRole('textbox', {name: (/quiz title/i)});
@@ -80,6 +79,45 @@ describe('CreateQuiz', () => {
             })
         );
         expect(mockNavigate).toHaveBeenCalledWith('/dashboard');
+    });
+
+    it('should display error message for improperly formatted quiz question(s) and prevent submission if quiz is missing a correct answer', async () => {
+        const spyApi = vi.spyOn(api, 'post').mockResolvedValue({
+            data : { message: "Success"}
+        });
+
+        const user = userEvent.setup();
+        const quizTitle = screen.getByRole('textbox', {name: (/quiz title/i)});
+        const quizPasteText = screen.getByRole('textbox', {name: /paste quiz text/i});
+        const quizSubmission = screen.getByRole('button', {name: /save quiz/i});
+
+        await user.type(quizTitle, 'Demo Quiz 1');
+        await user.type(quizPasteText, '1. What is the capital of France?\n' +
+            'A. Berlin\n' +
+            'B. Madrid\n' +
+            'C. Paris*\n' +
+            'D. Rome\n' +
+            '\n' +
+            '2. Which planet is known as the Red Planet?\n' +
+            'A. Earth\n' +
+            'B. Mars\n' +
+            'C. Jupiter\n' +
+            'D. Saturn\n' +
+            '\n' +
+            '3. Select all of the following that are numbers.\n' +
+            'A. 1*\n' +
+            'B. 2*\n' +
+            'C. 3*\n' +
+            'D. $\n' +
+            'E. 5*\n' +
+            'F. ^');
+
+        await user.click(quizSubmission);
+
+        expect(spyApi).not.toHaveBeenCalled();
+        expect(mockNavigate).not.toHaveBeenCalled();
+        expect(screen.getByText(/parsing errors found:/i)).toBeVisible();
+
     });
 
 });
