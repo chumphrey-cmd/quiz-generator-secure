@@ -3,7 +3,10 @@ import CreateQuiz from "../CreateQuiz.jsx";
 import {MemoryRouter} from "react-router-dom";
 import {userEvent} from "@testing-library/user-event/dist/cjs/setup/index.js";
 import api from "../../services/api.js";
-import {parseAndMapQuestions} from "../../utils/parser.js";
+import {InvalidQuizTestFactory, ValidQuizTestFactory} from "../../../tests/helpers/QuizTestFactory.js";
+
+const validQuiz = ValidQuizTestFactory;
+const invalidQuiz = InvalidQuizTestFactory;
 
 const mockNavigate = vi.fn();
 vi.mock('react-router-dom', async () => {
@@ -23,6 +26,10 @@ describe('CreateQuiz', () => {
             </MemoryRouter>
         )
     );
+
+    afterEach(() => {
+        vi.clearAllMocks();
+    });
 
     it('should render Create Quiz Heading', () => {
         expect(screen.getByRole('heading', {name: /create new quiz/i})).toBeVisible();
@@ -48,25 +55,8 @@ describe('CreateQuiz', () => {
         const quizSubmission = screen.getByRole('button', {name: /save quiz/i});
 
         await user.type(quizTitle, 'Demo Quiz 1');
-        await user.type(quizPasteText, '1. What is the capital of France?\n' +
-            'A. Berlin\n' +
-            'B. Madrid\n' +
-            'C. Paris*\n' +
-            'D. Rome\n' +
-            '\n' +
-            '2. Which planet is known as the Red Planet?\n' +
-            'A. Earth\n' +
-            'B. Mars*\n' +
-            'C. Jupiter\n' +
-            'D. Saturn\n' +
-            '\n' +
-            '3. Select all of the following that are numbers.\n' +
-            'A. 1*\n' +
-            'B. 2*\n' +
-            'C. 3*\n' +
-            'D. $\n' +
-            'E. 5*\n' +
-            'F. ^');
+        await user.type(quizPasteText, validQuiz());
+
 
         await user.click(quizSubmission);
 
@@ -92,26 +82,7 @@ describe('CreateQuiz', () => {
         const quizSubmission = screen.getByRole('button', {name: /save quiz/i});
 
         await user.type(quizTitle, 'Demo Quiz 1');
-        await user.type(quizPasteText, '1. What is the capital of France?\n' +
-            'A. Berlin\n' +
-            'B. Madrid\n' +
-            'C. Paris*\n' +
-            'D. Rome\n' +
-            '\n' +
-            '2. Which planet is known as the Red Planet?\n' +
-            'A. Earth\n' +
-            'B. Mars\n' +
-            'C. Jupiter\n' +
-            'D. Saturn\n' +
-            '\n' +
-            '3. Select all of the following that are numbers.\n' +
-            'A. 1*\n' +
-            'B. 2*\n' +
-            'C. 3*\n' +
-            'D. $\n' +
-            'E. 5*\n' +
-            'F. ^');
-
+        await user.type(quizPasteText, invalidQuiz());
         await user.click(quizSubmission);
 
         expect(spyApi).not.toHaveBeenCalled();

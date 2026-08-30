@@ -4,19 +4,16 @@ import api from '../services/api';
 import { parseAndMapQuestions } from '../utils/parser';
 
 export default function CreateQuiz() {
-    // 1. State Management
-    const [title, setTitle] = useState('');          // Holds the quiz title
-    const [rawText, setRawText] = useState('');      // Holds the massive block of pasted text
-    const [errors, setErrors] = useState([]);        // Holds the array of errors from our parser
-    const [isSubmitting, setIsSubmitting] = useState(false); // Prevents spam-clicking the save button
+    const [title, setTitle] = useState('');
+    const [rawText, setRawText] = useState('');
+    const [errors, setErrors] = useState([]);
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
     const navigate = useNavigate();
 
-    // 2. The Submit Handler
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        // Reset our errors and lock the button
         setErrors([]);
         setIsSubmitting(true);
 
